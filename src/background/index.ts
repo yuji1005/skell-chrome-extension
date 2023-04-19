@@ -1,18 +1,23 @@
-import browser from 'webextension-polyfill';
+import { skell } from '../app/skell';
 
-import store from '../app/store';
-import { isDev } from '../shared/utils';
-
-store.subscribe(() => {
-  console.log('state', store.getState());
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    id: 'skell',
+    title: 'go skell',
+    contexts: ['selection'],
+  });
 });
 
-// show welcome page on new install
-browser.runtime.onInstalled.addListener(async (details) => {
-  if (details.reason === 'install') {
-    //show the welcome page
-    const url = browser.runtime.getURL(isDev ? 'src/welcome/welcome.html' : 'welcome.html'); // TODO: better approach
-    await browser.tabs.create({ url });
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (tab !== undefined) {
+    switch (info.menuItemId) {
+      case 'skell': {
+        const selectedText = info.selectionText !== undefined ? info.selectionText : '';
+        const translatedText = await skell(selectedText);
+        console.log(translatedText);
+        break;
+      }
+    }
   }
 });
 

@@ -1,13 +1,10 @@
 import React, { ReactElement } from 'react';
+import { Container, Select } from '@mantine/core';
 
 const Popup = (): ReactElement => {
-  document.body.style.width = '15rem';
-  document.body.style.height = '15rem';
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <h1>Popup</h1>
-    </div>
-  );
+  document.body.style.width = '0rem';
+  document.body.style.height = '0rem';
+  return <Container p="xl"></Container>;
 };
 
 export default Popup;
